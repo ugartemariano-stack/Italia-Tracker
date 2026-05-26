@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Postulación Arquitectura Italia 🇮🇹</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:#f5f4f0;color:#1c1c1a;min-height:100vh;font-size:15px}
+.app{max-width:680px;margin:0 auto;background:#fff;min-height:100vh;border-left:0.5px solid #e0ddd4;border-right:0.5px solid #e0ddd4;box-shadow:0 0 40px rgba(0,0,0,0.06)}
+/* Header */
+.hdr{padding:14px 16px;border-bottom:0.5px solid #e0ddd4;position:sticky;top:0;background:#fff;z-index:10}
+.hdr-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.hdr-title{font-size:15px;font-weight:600;color:#1c1c1a}
+.hdr-sub{font-size:11px;color:#888;margin-top:1px}
+.mode-pill{display:flex;background:#f0ede6;border-radius:9px;padding:3px;gap:2px}
+.mode-btn{padding:5px 12px;border-radius:7px;border:none;font-size:12px;cursor:pointer;background:transparent;color:#888;font-weight:500;transition:all 0.15s}
+.mode-btn.active{background:#fff;color:#1c1c1a;box-shadow:0 1px 3px rgba(0,0,0,0.12)}
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}
+.stat{background:#f7f6f2;border-radius:8px;padding:7px 8px;text-align:center}
+.stat-n{font-size:18px;font-weight:600}
+.stat-l{font-size:10px;color:#888;margin-top:1px}
+.pbar{height:3px;background:#ebe9e2;border-radius:2px;overflow:hidden}
+.pfill{height:100%;background:#1D9E75;border-radius:2px;transition:width 0.5s}
+/* Tabs */
+.tabs{display:flex;border-bottom:0.5px solid #e0ddd4;background:#fff;position:sticky;top:80px;z-index:9}
+.tab{flex:1;padding:10px 4px;font-size:12px;border:none;background:transparent;cursor:pointer;color:#888;font-weight:500;border-bottom:2px solid transparent;transition:all 0.15s}
+.tab.active{color:#1c1c1a;border-bottom-color:#534AB7}
+/* Tasks */
+.view{padding-bottom:80px}
+.son-banner{padding:8px 16px;background:#E1F5EE;font-size:12px;color:#0F6E56;border-bottom:0.5px solid #c8ead8}
+.ph-hdr{display:flex;justify-content:space-between;align-items:center;padding:6px 16px;border-top:0.5px solid #e0ddd4;border-bottom:0.5px solid #e0ddd4}
+.ph-name{font-size:11px;font-weight:600}
+.ph-count{font-size:10px}
+.task-item{display:flex;align-items:flex-start;gap:10px;padding:11px 16px;border-bottom:0.5px solid #f0ede6;transition:background 0.1s;-webkit-tap-highlight-color:transparent}
+.task-item.done-bg{background:#fafaf8}
+.cb{width:20px;height:20px;border-radius:5px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;border:1.5px solid #ccc;background:transparent;transition:all 0.15s;margin-top:1px}
+.cb.on{background:#1D9E75;border-color:#1D9E75}
+.cb-check{font-size:11px;color:#fff;font-weight:700}
+.t-content{flex:1;min-width:0}
+.t-name{font-size:13px;font-weight:500;line-height:1.3;color:#1c1c1a}
+.t-name.done{color:#999;text-decoration:line-through;font-weight:400}
+.t-detail{font-size:11px;color:#888;margin-top:2px;line-height:1.4}
+.t-comment{font-size:11px;color:#185FA5;margin-top:5px;padding:4px 8px;background:#E6F1FB;border-radius:6px;line-height:1.4}
+.t-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
+.t-dl{font-size:10px;color:#888;white-space:nowrap}
+.t-dl.urg{color:#BA7517;font-weight:600}
+.urg-badge{color:#BA7517;margin-right:3px}
+.btn{font-size:11px;padding:4px 10px;border-radius:7px;border:0.5px solid #ddd;background:transparent;color:#888;cursor:pointer;white-space:nowrap;transition:all 0.15s;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(0.97)}
+.btn-primary{background:#1D9E75;color:#fff;border-color:#1D9E75}
+.btn-info{background:#E6F1FB;color:#185FA5;border-color:#B5D4F4}
+.btn-warn{background:#FAEEDA;color:#854F0B;border-color:#FAC775}
+.btn-verify{background:#E1F5EE;color:#0F6E56;border-color:#9FE1CB}
+.btn-row{display:flex;gap:6px;padding:8px 16px;background:#fafaf8;border-bottom:0.5px solid #e0ddd4;flex-wrap:wrap;align-items:center}
+.btn-row-label{font-size:10px;color:#999;margin-right:2px}
+/* Bottom bar */
+.bot{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:680px;background:#fff;border-top:0.5px solid #e0ddd4;padding:10px 16px;display:flex;gap:8px;flex-wrap:wrap;z-index:20}
+/* Gantt */
+.gantt-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.gantt-inner{min-width:610px}
+.gantt-month-row{display:flex;padding-left:162px;border-bottom:0.5px solid #ddd}
+.gantt-month{width:28px;flex-shrink:0;font-size:8px;text-align:center;padding:3px 0;color:#999;border-left:0.5px solid #ebe9e2}
+.gantt-month.key{font-weight:600;color:#444;border-left-color:#bbb}
+.gantt-ph-row{display:flex;align-items:center}
+.gantt-ph-label{width:162px;flex-shrink:0;padding:3px 8px;font-size:10px;font-weight:600}
+.gantt-ph-cells{display:flex;flex:1}
+.gantt-ph-cell{width:28px;flex-shrink:0;height:18px;border-left:0.5px solid transparent}
+.gantt-task-row{display:flex;align-items:center;height:27px;border-bottom:0.5px solid #f0ede6}
+.gantt-task-label{width:162px;flex-shrink:0;padding:0 8px;font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#1c1c1a}
+.gantt-task-label.done{color:#bbb;text-decoration:line-through}
+.gantt-bars{position:relative;display:flex;flex:1;height:100%;align-items:center}
+.gantt-grid-cell{width:28px;flex-shrink:0;height:100%;border-left:0.5px solid #f0ede6}
+.gantt-grid-cell.key{border-left-color:#ddd}
+.gantt-bar{position:absolute;height:16px;border-radius:3px;display:flex;align-items:center;justify-content:center}
+.gantt-bar-text{font-size:8px;color:#fff;font-weight:700}
+.gantt-legend{display:flex;gap:14px;padding:10px 16px;font-size:10px;color:#888;flex-wrap:wrap;border-top:0.5px solid #f0ede6}
+.gantt-legend-dot{display:inline-block;width:14px;height:7px;border-radius:2px;vertical-align:middle;margin-right:3px}
+.mobile-gantt-hint{display:none;padding:6px 16px;font-size:11px;color:#888;background:#f7f6f2;border-bottom:0.5px solid #e0ddd4}
+@media(max-width:500px){.mobile-gantt-hint{display:block}}
+/* Specialization */
+.spec-tabs{display:flex;border-bottom:0.5px solid #e0ddd4}
+.spec-tab{flex:1;padding:8px 4px;font-size:11px;border:none;background:transparent;cursor:pointer;color:#888;font-weight:500;border-bottom:2px solid transparent}
+.spec-tab.active{color:#993556;border-bottom-color:#993556}
+.spec-content{padding:14px 16px;padding-bottom:90px}
+.trend-card{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:0.5px solid #e0ddd4;border-radius:9px;margin-bottom:8px}
+.trend-icon{font-size:20px;flex-shrink:0;margin-top:2px}
+.trend-body{flex:1;min-width:0}
+.trend-head{display:flex;justify-content:space-between;align-items:flex-start;gap:6px;margin-bottom:3px}
+.trend-name{font-size:13px;font-weight:500}
+.trend-salary{font-size:11px;font-weight:600;padding:2px 8px;border-radius:9px;white-space:nowrap}
+.trend-bar-row{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.trend-bar-wrap{width:60px;height:4px;background:#ebe9e2;border-radius:2px;overflow:hidden}
+.trend-bar-fill{height:100%;border-radius:2px}
+.trend-pct{font-size:9px;font-weight:600}
+.trend-why{font-size:11px;color:#666;line-height:1.4}
+.info-box{border-radius:9px;padding:10px 12px;margin-bottom:10px;font-size:12px;line-height:1.6}
+.rm-step{display:flex;gap:10px;margin-bottom:10px}
+.rm-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.rm-line{width:1px;flex:1;background:#e0ddd4;margin-top:3px}
+.rm-body{flex:1;padding-bottom:10px}
+.rm-title{font-size:13px;font-weight:600;color:#1c1c1a}
+.rm-period{font-size:10px;margin-bottom:5px;margin-top:1px}
+.rm-items{background:#f7f6f2;border-radius:7px;padding:8px 10px}
+.rm-item{font-size:11px;color:#666;display:flex;gap:5px;margin-bottom:3px;line-height:1.4}
+/* Modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:100;align-items:flex-end;justify-content:center;padding:0}
+@media(min-width:500px){.modal-overlay{align-items:center;padding:20px}}
+.modal-overlay.open{display:flex}
+.modal-box{background:#fff;border-radius:14px 14px 0 0;padding:20px;width:100%;max-width:480px;max-height:85vh;overflow-y:auto}
+@media(min-width:500px){.modal-box{border-radius:14px}}
+.modal-title{font-size:15px;font-weight:600;margin-bottom:6px}
+.modal-sub{font-size:12px;color:#666;margin-bottom:12px;line-height:1.4}
+.modal-label{font-size:12px;color:#666;margin-bottom:4px;margin-top:10px}
+input[type=text],input[type=email],textarea{width:100%;font-size:13px;border-radius:8px;border:1px solid #ddd;padding:9px 10px;background:#f7f6f2;color:#1c1c1a;font-family:inherit;outline:none;transition:border 0.15s}
+input:focus,textarea:focus{border-color:#534AB7;background:#fff}
+textarea{resize:vertical;line-height:1.5}
+.modal-btns{display:flex;gap:8px;margin-top:14px}
+.modal-btn{flex:1;padding:11px;border-radius:10px;border:none;font-size:13px;cursor:pointer;font-weight:500;font-family:inherit;transition:all 0.15s}
+.modal-btn:active{transform:scale(0.97)}
+.modal-btn-primary{background:#1D9E75;color:#fff}
+.modal-btn-ghost{background:#f0ede6;color:#666}
+pre.email-preview{font-size:11px;background:#f7f6f2;border-radius:8px;padding:10px;white-space:pre-wrap;color:#666;max-height:200px;overflow-y:auto;border:0.5px solid #e0ddd4;font-family:inherit;line-height:1.5;margin-top:8px}
+.sync-link-input{font-family:monospace;font-size:10px;background:#f7f6f2;word-break:break-all}
+/* Urgency badge */
+.urg-tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:9px;background:#FAEEDA;color:#854F0B;white-space:nowrap}
+/* Toast */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1c1c1a;color:#fff;font-size:12px;padding:8px 16px;border-radius:20px;opacity:0;transition:opacity 0.3s;z-index:200;white-space:nowrap;pointer-events:none}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="hdr">
+    <div class="hdr-top">
+      <div>
+        <div class="hdr-title">Postulación Arquitectura Italia 🇮🇹</div>
+        <div class="hdr-sub">PoliMi (Milán) · PoliTo (Turín) — entrada sep. 2027</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+        <div class="mode-pill">
+          <button class="mode-btn active" id="btn-parent" onclick="setMode('parent')">👨 Papá</button>
+          <button class="mode-btn" id="btn-son" onclick="setMode('son')">👤 Hijo</button>
+        </div>
+        <span class="urg-tag" id="urg-tag" style="display:none"></span>
+        <button class="btn" onclick="openModal('settings')">⚙</button>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="stat-n" id="s-total">0</div><div class="stat-l">Total</div></div>
+      <div class="stat"><div class="stat-n" id="s-done" style="color:#1D9E75">0</div><div class="stat-l">Hechas</div></div>
+      <div class="stat"><div class="stat-n" id="s-ver" style="color:#185FA5">0</div><div class="stat-l">Verif.</div></div>
+      <div class="stat"><div class="stat-n" id="s-pct">0%</div><div class="stat-l">Avance</div></div>
+    </div>
+    <div class="pbar"><div class="pfill" id="pfill" style="width:0%"></div></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" id="tab-tasks" onclick="setView('tasks')">✅ Tareas</button>
+    <button class="tab" id="tab-gantt" onclick="setView('gantt')">📅 Gantt</button>
+    <button class="tab" id="tab-spec" onclick="setView('spec')">🎯 Especialización</button>
+  </div>
+
+  <div id="view-tasks" class="view"></div>
+  <div id="view-gantt" class="view" style="display:none"></div>
+  <div id="view-spec" class="view" style="display:none"></div>
+
+  <div class="bot">
+    <button class="btn btn-info" onclick="openModal('share')">🔗 Compartir avance</button>
+    <button class="btn btn-warn" onclick="copyWhatsAppGeneral()">💬 WhatsApp resumen</button>
+    <button class="btn" onclick="openModal('report')">📊 Reporte</button>
+  </div>
+</div>
+
+<!-- Modals -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal-box" id="modal-box" onclick="event.stopPropagation()"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════════
+const PM = {
+  p1:{name:"Preparación base",     color:"#0F6E56",light:"#E1F5EE"},
+  p2:{name:"Portafolio",            color:"#185FA5",light:"#E6F1FB"},
+  p3:{name:"Documentación consular",color:"#854F0B",light:"#FAEEDA"},
+  p4:{name:"Tests de admisión",     color:"#993C1D",light:"#FAECE7"},
+  p5:{name:"Postulación formal",    color:"#3C3489",light:"#EEEDFE"},
+  p6:{name:"Becas y logística",     color:"#3B6D11",light:"#EAF3DE"},
+  p7:{name:"Ruta de especialización",color:"#993556",light:"#FBEAF0"},
+};
+
+const TASKS = [
+  {id:"t1",ph:"p1",name:"Italiano intensivo (objetivo B1)",detail:"Mínimo 3h/semana. Duolingo + clases particulares o academia online.",dl:"Dic 2026",s:0,e:6,urg:false},
+  {id:"t2",ph:"p1",name:"Certificación inglés B2",detail:"IELTS o TOEFL iBT ≥80 puntos. Requerido por ambas universidades.",dl:"Oct 2026",s:0,e:4,urg:false},
+  {id:"t3",ph:"p1",name:"Recopilar trabajos de taller UDD",detail:"Escanear y fotografiar proyectos de los 3 años. Alta calidad digital.",dl:"Ago 2026",s:0,e:2,urg:false},
+  {id:"t4",ph:"p1",name:"Certificado de notas UDD (apostillado)",detail:"Con promedio ponderado en inglés. Apostillar ante RREE Chile.",dl:"Jul 2026",s:0,e:1,urg:false},
+  {id:"t5",ph:"p1",name:"Verificar Codice Fiscale vigente",detail:"Confirmar en consulado italiano en Chile. Necesario para todos los trámites.",dl:"Jun 2026",s:0,e:0,urg:true},
+  {id:"t6",ph:"p2",name:"Seleccionar 6–8 proyectos para portafolio",detail:"Mezcla individual y grupal. Proceso de diseño + resultado final.",dl:"Ago 2026",s:1,e:2,urg:false},
+  {id:"t7",ph:"p2",name:"Documentar proyectos (planos + renders)",detail:"PDF máx 20 páginas. Layout profesional. Memorias de diseño.",dl:"Sep 2026",s:2,e:3,urg:false},
+  {id:"t8",ph:"p2",name:"Fotografiar maquetas y proceso de taller",detail:"Las escuelas italianas valoran el proceso manual y la maqueta física.",dl:"Sep 2026",s:2,e:3,urg:false},
+  {id:"t9",ph:"p2",name:"Carta de motivación (borrador)",detail:"1–1.5 páginas en italiano e inglés. Por qué Italia, por qué esa universidad.",dl:"Oct 2026",s:3,e:4,urg:false},
+  {id:"t10",ph:"p3",name:"Dichiarazione di Valore (DDV)",detail:"Tramitar en consulado italiano en Chile. Demora 2–3 meses. ~$150 USD.",dl:"Dic 2026",s:3,e:6,urg:true},
+  {id:"t11",ph:"p3",name:"Apostilla certificado de notas UDD",detail:"Ante Ministerio de RREE de Chile. Para validar el documento en Italia.",dl:"Oct 2026",s:3,e:4,urg:false},
+  {id:"t12",ph:"p3",name:"Syllabus de materias cursadas (UDD)",detail:"PoliMi y PoliTo los necesitan para evaluar qué créditos reconocen.",dl:"Nov 2026",s:4,e:5,urg:false},
+  {id:"t13",ph:"p3",name:"Inscripción AIRE en consulado italiano",detail:"Registro como italiano residente en Chile. Necesario para DSU y becas.",dl:"Sep 2026",s:2,e:3,urg:true},
+  {id:"t14",ph:"p4",name:"Preparar ARCHED test (PoliMi)",detail:"Aptitud espacial, dibujo técnico, cultura arquitectónica. Buscar material de práctica.",dl:"Dic 2026",s:4,e:6,urg:false},
+  {id:"t15",ph:"p4",name:"Preparar test TIL (PoliTo)",detail:"Test de ingreso online PoliTo. Revisar fecha exacta en el call de primavera.",dl:"Ene 2027",s:5,e:7,urg:false},
+  {id:"t16",ph:"p4",name:"Rendir ARCHED / TIL",detail:"Confirmar fechas exactas en las webs oficiales. Determina posición en ranking.",dl:"Feb 2027",s:7,e:8,urg:false},
+  {id:"t17",ph:"p5",name:"Crear cuenta en Apply@PoliMi",detail:"Registrarse en el portal online de admisiones. Subir todos los documentos.",dl:"Ene 2027",s:7,e:7,urg:false},
+  {id:"t18",ph:"p5",name:"Crear cuenta en Apply@PoliTo",detail:"Registrarse en el portal Apply@polito. Subir documentos y certificado de idioma.",dl:"Feb 2027",s:7,e:8,urg:false},
+  {id:"t19",ph:"p5",name:"Solicitar evaluación carrera académica",detail:"Formulario online Apply@PoliMi. €60 por programa. Período mayo–julio 2027.",dl:"Jul 2027",s:11,e:13,urg:false},
+  {id:"t20",ph:"p5",name:"Enviar postulación completa (ambas)",detail:"Adjuntar: notas, portafolio, DDV, syllabus, certificado idioma, carta motivación.",dl:"Jul 2027",s:12,e:13,urg:false},
+  {id:"t21",ph:"p5",name:"Confirmar admisión + pagar matrícula",detail:"PoliMi primera cuota €895. PoliTo equivalente. Plazo: septiembre 2027.",dl:"Sep 2027",s:14,e:15,urg:false},
+  {id:"t22",ph:"p6",name:"Tramitar ISEEU Parificato",detail:"Con ingresos familiares de Chile. Ante CAF (Centro di Assistenza Fiscale) en Italia.",dl:"Jun 2027",s:11,e:12,urg:false},
+  {id:"t23",ph:"p6",name:"Postular beca DSU regional",detail:"EDiSU Piemonte (PoliTo) o DSU PoliMi. Cubre matrícula + €5.000/año adicional.",dl:"Sep 2027",s:12,e:15,urg:false},
+  {id:"t24",ph:"p6",name:"Revisar becas de mérito universidad",detail:"Ambas universidades tienen becas propias por rendimiento académico.",dl:"Ago 2027",s:14,e:14,urg:false},
+  {id:"t25",ph:"p6",name:"Buscar alojamiento (Milán o Turín)",detail:"Residencias universitarias vía portal DSU o arrendar habitación. Turín más barato.",dl:"Ago 2027",s:12,e:14,urg:false},
+  {id:"sp1",ph:"p7",name:"Investigar programas de sostenibilidad",detail:"MASt PoliTo vs SALd PoliMi. Comparar cursos, profesores y salidas profesionales.",dl:"Sep 2026",s:0,e:3,urg:false},
+  {id:"sp2",ph:"p7",name:"Aprender BIM (Revit + Rhino básico)",detail:"Cursos online. Diferenciador clave: 20–40% más salario vs arquitecto tradicional.",dl:"Mar 2027",s:3,e:9,urg:false},
+  {id:"sp3",ph:"p7",name:"Definir track de master a postular",detail:"Architecture for Sustainability (PoliTo) vs SALd (PoliMi) vs otras opciones.",dl:"Abr 2027",s:7,e:10,urg:false},
+  {id:"sp4",ph:"p7",name:"Preparar certif. LEED / Passivhaus",detail:"Estudiar en paralelo con el master. Añade £5K–10K al salario en Europa.",dl:"Sep 2027",s:10,e:15,urg:false},
+];
+
+const MONTHS = ["Jun'26","Jul","Ago","Sep","Oct","Nov","Dic","Ene'27","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep'27"];
+
+const TRENDS = [
+  {icon:"🌿",label:"Sostenibilidad",salary:"€70K–€100K",demand:95,dc:"#1D9E75",sc:"#0F6E56",sb:"#E1F5EE",why:"Mandato legal EU: edificios net-zero desde 2030. Demanda creciendo +14%/año. LEED y Passivhaus son credenciales premium que añaden £5K–10K/año en Europa."},
+  {icon:"🏢",label:"Real Estate Development",salary:"€80K–€150K+",demand:90,dc:"#1D9E75",sc:"#0F6E56",sb:"#E1F5EE",why:"Mayor techo de ingresos. Arquitecto que entiende viabilidad financiera, costos y mercado = perfil escasísimo y muy cotizado."},
+  {icon:"⚙️",label:"BIM & Digital Architecture",salary:"€60K–€120K",demand:88,dc:"#378ADD",sc:"#185FA5",sb:"#E6F1FB",why:"20–40% de prima salarial sobre arquitecto tradicional. Obligatorio en contratos públicos EU desde 2016. Se aprende en paralelo."},
+  {icon:"🧮",label:"Diseño Computacional",salary:"€85K–€130K",demand:75,dc:"#378ADD",sc:"#185FA5",sb:"#E6F1FB",why:"Perfil técnico más cotizado globalmente. Requiere gusto por programación (Grasshopper, Python, Rhino). Nicho pero muy bien pagado."},
+  {icon:"🏙️",label:"Urban Planning & Smart Cities",salary:"€55K–€95K",demand:78,dc:"#EF9F27",sc:"#854F0B",sb:"#FAEEDA",why:"20–40% más que arquitecto entry-level. Alta demanda en sector público. Resistente a ciclos económicos."},
+  {icon:"🏚️",label:"Arquitectura tradicional (sin espec.)",salary:"€35K–€60K",demand:35,dc:"#E24B4A",sc:"#A32D2D",sb:"#FCEBEB",why:"Mercado saturado. Sin especialización, los arquitectos compiten solo por precio. Es el camino que hay que evitar."},
+];
+
+const ROADMAP = [
+  {step:"01",title:"Laurea Triennale (transfer)",period:"Sep 2027 – 2028/29",color:"#0F6E56",bg:"#E1F5EE",items:["Completar créditos con ventaja de transfer (1–1.5 años)","Dominar BIM: Revit, Rhino, Grasshopper","Electivos de sostenibilidad y energía","Práctica en firma de arquitectura o real estate"]},
+  {step:"02",title:"Laurea Magistrale en Sostenibilidad",period:"2029 – 2031",color:"#3C3489",bg:"#EEEDFE",items:["PoliTo: Architecture for Sustainability (MASt)","PoliMi: Sustainable Architecture & Landscape Design (SALd)","Electivos: real estate development + finanzas inmobiliarias","Tesis: sostenibilidad + mercado inmobiliario"]},
+  {step:"03",title:"Certificaciones post-título",period:"2031 – 2032",color:"#854F0B",bg:"#FAEEDA",items:["LEED AP — líder mundial en diseño sostenible","Passivhaus Designer — añade £5K–10K/año en Europa","BIM Level 2/3 (buildingSMART internacional)","Registro Ordine degli Architetti italiano (opcional)"]},
+  {step:"04",title:"Perfil objetivo de carrera",period:"2032 en adelante",color:"#993C1D",bg:"#FAECE7",items:["Consultor sostenibilidad: real estate europeo / LatAm","Arquitecto-developer: diseño + viabilidad económica","Senior firma internacional: €80K–€150K+","Potencial en Kuantica: arquitecto + estratega de producto"]},
+];
+
+// ═══════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════
+let state = {tasks:{}, cfg:{sonEmail:"",dadEmail:"",sonName:"tu hijo"}};
+let appMode = "parent"; // parent | son
+let appView = "tasks";
+let specTab = "trends";
+let modalType = null;
+let modalTask = null;
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem("arch_italia_v1");
+    if (saved) state = JSON.parse(saved);
+  } catch(e) {}
+  // Check URL hash for shared state
+  const hash = window.location.hash.slice(1);
+  if (hash && hash.length > 10) {
+    try {
+      const imported = JSON.parse(atob(hash));
+      if (imported && imported.tasks) {
+        const msg = appMode === "parent"
+          ? "Se detectó un avance compartido por tu hijo. ¿Importar su progreso?"
+          : "Se detectó estado compartido. ¿Importar?";
+        if (confirm(msg)) {
+          // Merge: keep parent's verified marks, update done/comment from imported
+          Object.entries(imported.tasks).forEach(([id, val]) => {
+            state.tasks[id] = {...(state.tasks[id]||{}), done: val.done, comment: val.comment||""};
+          });
+          saveState();
+        }
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+    } catch(e) {}
+  }
+}
+
+function saveState() {
+  try { localStorage.setItem("arch_italia_v1", JSON.stringify(state)); } catch(e) {}
+}
+
+function getTs(id) { return state.tasks[id] || {done:false, verified:false, comment:""}; }
+
+function toggleDone(id) {
+  const cur = getTs(id);
+  const upd = {...cur, done: !cur.done};
+  if (!upd.done) upd.verified = false;
+  state.tasks[id] = upd;
+  saveState();
+  render();
+}
+
+function toggleVerify(id) {
+  const cur = getTs(id);
+  if (!cur.done) return;
+  state.tasks[id] = {...cur, verified: !cur.verified};
+  saveState();
+  render();
+}
+
+function setMode(m) { appMode = m; render(); }
+function setView(v) { appView = v; render(); }
+function setSpecTab(t) { specTab = t; renderSpec(); }
+
+// ═══════════════════════════════════════════════════════════
+// STATS
+// ═══════════════════════════════════════════════════════════
+function calcStats() {
+  const total = TASKS.length;
+  const done = TASKS.filter(t => getTs(t.id).done).length;
+  const ver = TASKS.filter(t => getTs(t.id).verified).length;
+  const urg = TASKS.filter(t => t.urg && !getTs(t.id).done).length;
+  const pct = Math.round(done / total * 100);
+  return {total, done, ver, urg, pct};
+}
+
+// ═══════════════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════════════
+function render() {
+  const st = calcStats();
+
+  // Header stats
+  document.getElementById("s-total").textContent = st.total;
+  document.getElementById("s-done").textContent = st.done;
+  document.getElementById("s-ver").textContent = st.ver;
+  document.getElementById("s-pct").textContent = st.pct + "%";
+  document.getElementById("s-pct").style.color = st.pct > 50 ? "#1D9E75" : st.pct > 20 ? "#BA7517" : "#1c1c1a";
+  document.getElementById("pfill").style.width = st.pct + "%";
+
+  // Urgent badge
+  const urgTag = document.getElementById("urg-tag");
+  if (st.urg > 0) { urgTag.textContent = "⚠ " + st.urg + " urgente" + (st.urg > 1 ? "s" : ""); urgTag.style.display = ""; }
+  else { urgTag.style.display = "none"; }
+
+  // Mode buttons
+  document.getElementById("btn-parent").classList.toggle("active", appMode === "parent");
+  document.getElementById("btn-son").classList.toggle("active", appMode === "son");
+
+  // Tab buttons
+  ["tasks","gantt","spec"].forEach(v => {
+    document.getElementById("tab-" + v).classList.toggle("active", appView === v);
+  });
+
+  // Views
+  document.getElementById("view-tasks").style.display = appView === "tasks" ? "" : "none";
+  document.getElementById("view-gantt").style.display = appView === "gantt" ? "" : "none";
+  document.getElementById("view-spec").style.display  = appView === "spec"  ? "" : "none";
+
+  if (appView === "tasks") renderTasks();
+  if (appView === "gantt") renderGantt();
+  if (appView === "spec")  renderSpec();
+}
+
+// ─── TASKS ────────────────────────────────────────────────
+function renderTasks() {
+  let html = "";
+  if (appMode === "son") html += `<div class="son-banner">👤 Vista hijo — marca tus tareas y agrega notas de avance</div>`;
+
+  Object.entries(PM).forEach(([phId, pm]) => {
+    const tasks = TASKS.filter(t => t.ph === phId);
+    const done = tasks.filter(t => getTs(t.id).done).length;
+    const ver = tasks.filter(t => getTs(t.id).verified).length;
+
+    html += `<div class="ph-hdr" style="background:${pm.light}">
+      <span class="ph-name" style="color:${pm.color}">${pm.name}</span>
+      <span class="ph-count" style="color:${pm.color};opacity:0.8">${done}/${tasks.length} · ${ver} verif.</span>
+    </div>`;
+
+    tasks.forEach(task => {
+      const s = getTs(task.id);
+      html += `<div class="task-item ${s.done ? "done-bg" : ""}">
+        <div class="cb ${s.done ? "on" : ""}" onclick="toggleDone('${task.id}')">
+          ${s.done ? `<span class="cb-check">✓</span>` : ""}
+        </div>
+        <div class="t-content">
+          <div class="t-name ${s.done ? "done" : ""}">
+            ${task.urg && !s.done ? `<span class="urg-badge">⚠</span>` : ""}${task.name}
+          </div>
+          <div class="t-detail">${task.detail}</div>
+          ${s.comment ? `<div class="t-comment">💬 ${escHtml(s.comment)}</div>` : ""}
+        </div>
+        <div class="t-right">
+          <span class="t-dl ${task.urg && !s.done ? "urg" : ""}">${task.dl}</span>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end">
+            <button class="btn" onclick="openCommentModal('${task.id}')">💬</button>
+            ${appMode === "parent" && s.done
+              ? `<button class="btn ${s.verified ? "btn-verify" : ""}" onclick="toggleVerify('${task.id}')">${s.verified ? "✓ OK" : "Verificar"}</button>`
+              : ""}
+          </div>
+        </div>
+      </div>`;
+    });
+
+    // Phase footer
+    html += `<div class="btn-row">
+      <span class="btn-row-label">Recordatorio:</span>
+      <button class="btn btn-info" onclick="openPhaseEmail('${phId}')">✉ Email al hijo</button>
+      <button class="btn btn-warn" onclick="copyPhaseWhatsApp('${phId}')">💬 WhatsApp</button>
+    </div>`;
+  });
+
+  document.getElementById("view-tasks").innerHTML = html;
+}
+
+// ─── GANTT ────────────────────────────────────────────────
+function renderGantt() {
+  const LW = 162, MW = 28;
+  let html = `<div class="mobile-gantt-hint">← Desliza horizontalmente para ver la línea de tiempo</div>`;
+  html += `<div class="gantt-wrap"><div class="gantt-inner">`;
+
+  // Month headers
+  html += `<div class="gantt-month-row">`;
+  MONTHS.forEach((m, i) => {
+    const key = i === 0 || i === 7;
+    html += `<div class="gantt-month ${key ? "key" : ""}">${m}</div>`;
+  });
+  html += `</div>`;
+
+  Object.entries(PM).forEach(([phId, pm]) => {
+    const tasks = TASKS.filter(t => t.ph === phId);
+    if (!tasks.length) return;
+    const done = tasks.filter(t => getTs(t.id).done).length;
+
+    html += `<div class="gantt-ph-row" style="background:${pm.light};border-top:0.5px solid #e0ddd4">
+      <div class="gantt-ph-label" style="color:${pm.color}">${pm.name} <span style="font-weight:400;opacity:0.7">(${done}/${tasks.length})</span></div>
+      <div class="gantt-ph-cells">`;
+    MONTHS.forEach((_,i) => {
+      const key = i === 0 || i === 7;
+      html += `<div class="gantt-ph-cell" style="border-left-color:${key ? pm.color + "50" : "transparent"}"></div>`;
+    });
+    html += `</div></div>`;
+
+    tasks.forEach(task => {
+      const s = getTs(task.id);
+      const bc = s.done ? "#1D9E75" : task.urg ? "#EF9F27" : pm.color;
+      const bl = task.s * MW + 2;
+      const bw = Math.max((task.e - task.s + 1) * MW - 4, MW - 4);
+      html += `<div class="gantt-task-row">
+        <div class="gantt-task-label ${s.done ? "done" : ""}">
+          ${task.urg && !s.done ? "<span style='color:#BA7517'>⚠ </span>" : ""}${task.name}
+        </div>
+        <div class="gantt-bars">`;
+      MONTHS.forEach((_,i) => {
+        html += `<div class="gantt-grid-cell ${i===0||i===7?"key":""}"></div>`;
+      });
+      html += `<div class="gantt-bar" style="left:${bl}px;width:${bw}px;background:${bc};opacity:${s.done?0.75:1}">
+          ${s.done ? `<span class="gantt-bar-text">✓${s.verified?"✓":""}</span>` : ""}
+        </div>
+        </div>
+      </div>`;
+    });
+  });
+
+  html += `</div></div>`;
+  html += `<div class="gantt-legend">
+    <span><span class="gantt-legend-dot" style="background:#1D9E75"></span>Completada</span>
+    <span><span class="gantt-legend-dot" style="background:#EF9F27"></span>Urgente</span>
+    <span><span class="gantt-legend-dot" style="background:#534AB7"></span>Normal</span>
+    <span style="margin-left:auto;opacity:0.6">✓✓ = verificada por papá</span>
+  </div>`;
+
+  document.getElementById("view-gantt").innerHTML = html;
+}
+
+// ─── SPECIALIZATION ───────────────────────────────────────
+function renderSpec() {
+  const el = document.getElementById("view-spec");
+  let html = `<div class="spec-tabs">
+    <button class="spec-tab ${specTab==="trends"?"active":""}" onclick="setSpecTab('trends')">📊 Tendencias de mercado</button>
+    <button class="spec-tab ${specTab==="plan"?"active":""}" onclick="setSpecTab('plan')">🗺 Plan de carrera</button>
+  </div>`;
+
+  if (specTab === "trends") {
+    html += `<div class="spec-content">
+      <div class="info-box" style="background:#FCEBEB;color:#A32D2D;margin-bottom:12px">
+        ⚠️ <strong>El problema:</strong> La arquitectura tradicional es el camino de menor ingreso y mayor saturación — globalmente y especialmente en Chile. La solución es especializarse estratégicamente, no cambiar de carrera.
+      </div>
+      <div style="font-size:11px;font-weight:600;color:#888;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.04em">Áreas por potencial de ingresos</div>`;
+
+    TRENDS.forEach((t,i) => {
+      html += `<div class="trend-card" style="${i===5?"opacity:0.75;background:#fafaf8":""}">
+        <div class="trend-icon">${t.icon}</div>
+        <div class="trend-body">
+          <div class="trend-head">
+            <span class="trend-name">${t.label}</span>
+            <span class="trend-salary" style="background:${t.sb};color:${t.sc}">${t.salary}</span>
+          </div>
+          <div class="trend-bar-row">
+            <span style="font-size:9px;color:#888">Demanda</span>
+            <div class="trend-bar-wrap"><div class="trend-bar-fill" style="width:${t.demand}%;background:${t.dc}"></div></div>
+            <span class="trend-pct" style="color:${t.dc}">${t.demand}%</span>
+          </div>
+          <div class="trend-why">${t.why}</div>
+        </div>
+      </div>`;
+    });
+
+    html += `<div class="info-box" style="background:#EEEDFE;color:#3C3489;margin-top:14px">
+      <div style="font-weight:600;margin-bottom:6px">🎯 Por qué el plan propuesto es el correcto</div>
+      ${["Sostenibilidad es obligatoria por ley en EU desde 2030 — no es tendencia, es mandato. Sin esta credencial, quedar fuera del mercado europeo es real.",
+         "Real estate development tiene el techo de ingresos más alto y tu hijo ya tiene exposición directa a través de la familia — ventaja enorme frente a otros arquitectos.",
+         "BIM no requiere un programa especializado: se aprende en paralelo y suma 20–40% al salario de cualquier especialidad.",
+         "El título italiano tiene reconocimiento automático en toda la EU — puede trabajar en cualquier país europeo sin revalidar."]
+        .map((txt,i) => `<div style="display:flex;gap:6px;margin-bottom:${i<3?5:0}px"><span style="color:#534AB7;font-weight:600;flex-shrink:0">${i+1}.</span><span>${txt}</span></div>`).join("")}
+    </div>
+    <div class="info-box" style="background:#EAF3DE;color:#3B6D11;margin-top:8px">
+      💡 <strong>Conexión Kuantica:</strong> Arquitecto con credencial de sostenibilidad europea + background en real estate = perfil único en Chile. Potencial de retorno directo y valor diferencial real para tu empresa.
+    </div></div>`;
+  }
+
+  if (specTab === "plan") {
+    html += `<div class="spec-content">
+      <div class="info-box" style="background:#EEEDFE;color:#3C3489;margin-bottom:14px">
+        🗺 <strong>Ruta recomendada:</strong> Sostenibilidad como especialización del master + Real Estate Development como orientación de carrera.
+      </div>`;
+
+    ROADMAP.forEach((r,i) => {
+      html += `<div class="rm-step">
+        <div style="display:flex;flex-direction:column;align-items:center">
+          <div class="rm-dot" style="background:${r.bg};border:1.5px solid ${r.color};color:${r.color}">${r.step}</div>
+          ${i<ROADMAP.length-1 ? `<div class="rm-line"></div>` : ""}
+        </div>
+        <div class="rm-body">
+          <div class="rm-title">${r.title}</div>
+          <div class="rm-period" style="color:${r.color}">${r.period}</div>
+          <div class="rm-items">
+            ${r.items.map((it,j) => `<div class="rm-item"><span style="color:${r.color};flex-shrink:0">→</span><span>${it}</span></div>`).join("")}
+          </div>
+        </div>
+      </div>`;
+    });
+
+    html += `<div class="info-box" style="background:#EAF3DE;color:#3B6D11;margin-top:4px">
+      💡 <strong>Conexión Kuantica:</strong> Arquitecto con credencial de sostenibilidad europea + background en real estate = perfil único. Potencial retorno directo a tu empresa.
+    </div></div>`;
+  }
+
+  el.innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════════════
+// MODALS
+// ═══════════════════════════════════════════════════════════
+function openModal(type, extra) {
+  modalType = type;
+  modalTask = extra || null;
+  const box = document.getElementById("modal-box");
+  let html = "";
+
+  if (type === "comment") {
+    const task = TASKS.find(t => t.id === extra);
+    const s = getTs(extra);
+    html = `<div class="modal-title">${task.name}</div>
+      <div class="modal-sub">${task.detail}</div>
+      <div class="modal-label">Nota / avance:</div>
+      <textarea id="comment-input" rows="3" placeholder="Escribe tu avance o comentario…">${escHtml(s.comment)}</textarea>
+      <div class="modal-btns">
+        <button class="modal-btn modal-btn-primary" onclick="saveComment()">Guardar</button>
+        <button class="modal-btn modal-btn-ghost" onclick="closeModal()">Cancelar</button>
+      </div>`;
+  }
+
+  if (type === "phase-email") {
+    const phId = extra;
+    const pm = PM[phId];
+    const pending = TASKS.filter(t => t.ph === phId && !getTs(t.id).done);
+    if (!pending.length) { showToast("Sin tareas pendientes en esta fase 🎉"); return; }
+    const list = pending.map((t,i) => `${i+1}. ${t.name}${t.urg?" ⚠ URGENTE":""}\n   → ${t.detail}\n   📅 ${t.dl}`).join("\n\n");
+    const subject = `Postulación Italia 🇮🇹 — Pendientes: ${pm.name}`;
+    const body = `Hola ${state.cfg.sonName},\n\nAquí tienes las tareas pendientes de la fase "${pm.name}":\n\n${list}\n\nCuando completes cada una, avísame para marcar el avance.\n\nAbrazo`;
+    html = emailModalHtml(subject, body, state.cfg.sonEmail);
+  }
+
+  if (type === "report") {
+    const lines = Object.entries(PM).map(([pid,p]) => {
+      const pt = TASKS.filter(t => t.ph === pid);
+      return `• ${p.name}: ${pt.filter(t=>getTs(t.id).done).length}/${pt.length} completadas, ${pt.filter(t=>getTs(t.id).verified).length} verificadas`;
+    });
+    const urgPend = TASKS.filter(t => t.urg && !getTs(t.id).done);
+    const st = calcStats();
+    const subject = "Reporte de avance — Postulación Arquitectura Italia";
+    const body = `REPORTE DE AVANCE\nPostulación Arquitectura Italia 2027\n${new Date().toLocaleDateString("es-CL")}\n\n════ RESUMEN ════\nTotal: ${st.total} | Completadas: ${st.done} (${st.pct}%) | Verificadas: ${st.ver}\n\n════ POR FASE ════\n${lines.join("\n")}\n\n════ URGENTES PENDIENTES ════\n${urgPend.length ? urgPend.map(t=>`⚠ ${t.name} — ${t.dl}`).join("\n") : "✓ Sin urgentes pendientes"}`;
+    html = emailModalHtml(subject, body, state.cfg.dadEmail, "📊 Reporte de avance");
+  }
+
+  if (type === "share") {
+    const encoded = btoa(JSON.stringify({tasks: state.tasks}));
+    const url = window.location.href.split("#")[0] + "#" + encoded;
+    html = `<div class="modal-title">🔗 Compartir avance</div>
+      <div class="modal-sub">Copia este link y mándalo por WhatsApp o email. Cuando el otro lo abra, podrá importar el estado actual.</div>
+      <div class="modal-label">Link de sincronización:</div>
+      <textarea class="sync-link-input" id="sync-link" rows="3" readonly>${url}</textarea>
+      <div class="modal-btns">
+        <button class="modal-btn modal-btn-primary" onclick="copySync()">Copiar link</button>
+        <button class="modal-btn modal-btn-ghost" onclick="closeModal()">Cerrar</button>
+      </div>`;
+  }
+
+  if (type === "settings") {
+    html = `<div class="modal-title">⚙ Configuración</div>
+      <div class="modal-label">Nombre del hijo</div>
+      <input type="text" id="cfg-name" value="${escHtml(state.cfg.sonName)}" placeholder="Ej: Martín">
+      <div class="modal-label">Email del hijo</div>
+      <input type="email" id="cfg-son-email" value="${escHtml(state.cfg.sonEmail)}" placeholder="martin@ejemplo.com">
+      <div class="modal-label">Tu email (para reportes)</div>
+      <input type="email" id="cfg-dad-email" value="${escHtml(state.cfg.dadEmail)}" placeholder="mariano@ejemplo.com">
+      <div class="modal-btns">
+        <button class="modal-btn modal-btn-primary" onclick="saveSettings()">Guardar</button>
+        <button class="modal-btn modal-btn-ghost" onclick="closeModal()">Cancelar</button>
+      </div>`;
+  }
+
+  box.innerHTML = html;
+  document.getElementById("modal").classList.add("open");
+}
+
+function emailModalHtml(subject, body, to, title) {
+  return `<div class="modal-title">${title || "✉ Recordatorio para tu hijo"}</div>
+    <div class="modal-label">Para:</div>
+    <input type="email" id="email-to" value="${escHtml(to||"")}" placeholder="email@ejemplo.com">
+    <div style="font-size:12px;color:#666;margin-top:8px">Asunto: <strong>${escHtml(subject)}</strong></div>
+    <pre class="email-preview">${escHtml(body)}</pre>
+    <div class="modal-btns">
+      <button class="modal-btn modal-btn-primary" onclick="copyEmailText('${btoa(encodeURIComponent(body))}')">Copiar texto</button>
+      <button class="modal-btn modal-btn-ghost" onclick="closeModal()">Cerrar</button>
+    </div>`;
+}
+
+function openCommentModal(id) { openModal("comment", id); }
+function openPhaseEmail(phId) { openModal("phase-email", phId); }
+
+function closeModal(e) {
+  if (!e || e.target === document.getElementById("modal")) {
+    document.getElementById("modal").classList.remove("open");
+    modalType = null;
+  }
+}
+
+function saveComment() {
+  const val = document.getElementById("comment-input").value;
+  const cur = getTs(modalTask);
+  state.tasks[modalTask] = {...cur, comment: val};
+  saveState();
+  document.getElementById("modal").classList.remove("open");
+  render();
+}
+
+function saveSettings() {
+  state.cfg.sonName  = document.getElementById("cfg-name").value || "tu hijo";
+  state.cfg.sonEmail = document.getElementById("cfg-son-email").value;
+  state.cfg.dadEmail = document.getElementById("cfg-dad-email").value;
+  saveState();
+  document.getElementById("modal").classList.remove("open");
+  showToast("Configuración guardada ✓");
+}
+
+function copyEmailText(encoded) {
+  const body = decodeURIComponent(atob(encoded));
+  navigator.clipboard.writeText(body).then(() => { showToast("Texto copiado ✓"); closeModal(); }).catch(() => showToast("Selecciona el texto y cópialo manualmente"));
+}
+
+function copySync() {
+  const url = document.getElementById("sync-link").value;
+  navigator.clipboard.writeText(url).then(() => { showToast("Link copiado ✓"); closeModal(); }).catch(() => showToast("Selecciona el texto del link y cópialo"));
+}
+
+function copyWhatsAppGeneral() {
+  const all = TASKS.filter(t => !getTs(t.id).done);
+  const txt = `Hola! 👋 Update postulación Italia 🇮🇹\n\n📋 *${all.length} tareas pendientes:*\n\n${all.slice(0,8).map((t,i)=>`${i+1}. *${t.name}*${t.urg?" ⚠":""} — ${t.dl}`).join("\n")}${all.length>8?`\n... y ${all.length-8} más`:""}\n\nAvísame al completar cada una 🙏`;
+  navigator.clipboard.writeText(txt).then(() => showToast("WhatsApp copiado ✓")).catch(() => showToast("Error al copiar"));
+}
+
+function copyPhaseWhatsApp(phId) {
+  const pm = PM[phId];
+  const em = TASKS.filter(t => t.ph === phId && !getTs(t.id).done);
+  if (!em.length) { showToast("Sin pendientes en esta fase 🎉"); return; }
+  const txt = `Hola! 👋 Pendientes de "${pm.name}" 🇮🇹\n\n${em.map((t,i)=>`${i+1}. *${t.name}*${t.urg?" ⚠":""}\n${t.detail}\n📅 ${t.dl}`).join("\n\n")}\n\nAvísame cuando completes cada una 🙏`;
+  navigator.clipboard.writeText(txt).then(() => showToast("WhatsApp copiado ✓")).catch(() => showToast("Error al copiar"));
+}
+
+// ═══════════════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════════════
+function escHtml(s) { return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2500);
+}
+
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
+loadState();
+render();
+</script>
+</body>
+</html>
